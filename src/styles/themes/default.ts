@@ -41,6 +41,7 @@ export const defaultTheme = {
             textM: "16px",
             textS: "14px",
             textSX: "12px",
+            tag: "10px",
         },
         // Line Heights
         lineHeight: {
