@@ -58,7 +58,6 @@ export const CartContainer = styled.a`
     }
 
     span {
-        /* make it absolute */
         position: absolute;
         top: -10px;
         right: -8px;

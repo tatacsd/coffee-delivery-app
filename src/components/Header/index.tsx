@@ -2,9 +2,12 @@ import { CartContainer, HeaderContainer, LocationContainer, LogoCoffeeDeliveryIm
 import logoCoffeDelivery from "../../assets/logo-coffee-delivery.svg";
 import shoppingCartFill from "../../assets/shopping-cart-fill.svg";
 import mapPin from "../../assets/map-pin-line-regular.svg";
+import { useCart } from "../../context/CartContext";
 
 export function Header () {
-    const hasItemsInCart = false;
+    const { shoppingCart } = useCart();
+
+    const hasItemsInCart = shoppingCart.length > 0? true : false;
 
     return(
         <HeaderContainer>
@@ -23,7 +26,9 @@ export function Header () {
                         </span>
                 </LocationContainer>
                 <CartContainer href="/checkout">
-                    {hasItemsInCart && <span>3</span>}
+                    {hasItemsInCart && <span>
+                        {shoppingCart.length}
+                        </span>}
                     <img src={shoppingCartFill} alt="shopping cart icon"/>
                 </CartContainer>
             </nav>
