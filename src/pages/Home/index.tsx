@@ -4,7 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { HomeMainContent } from './styles';
 
 export function Home() {
-    const { coffees, increaseQuantity, decreaseQuantity, updateCart } = useCart();
+    const { coffees, shoppingCart, increaseQuantity, decreaseQuantity, updateCart } = useCart();
 
     return (
         <div>
