@@ -11,7 +11,7 @@ export const SuccessContainer = styled.div`
     @media (max-width: 1023px) {
         flex-direction: column;
         gap: 1rem;
-        padding-top: 1rem;
+        padding: 2rem;
     }
 `;
 
