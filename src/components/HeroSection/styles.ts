@@ -14,6 +14,13 @@ export const HeroSectionWrapper = styled.section<HeroSectionWrapperProps>`
     background-size: cover;
     background-position: center;
     background-color: rgba(255, 255, 255, 0.3);
+
+    @media (max-width: 1023px) {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 2rem;
+    
+  }
 `;
 
 export const HeroContent = styled.div`
@@ -34,6 +41,11 @@ export const HeroContent = styled.div`
         margin-bottom: 2rem;
         max-width: 420px;
         word-wrap: break-word;
+    }
+
+    @media (max-width: 1023px) {
+        align-items: center;
+        text-align: center;
     }
 `;
 
@@ -57,4 +69,11 @@ export const ItemComponent = styled.div`
     }
 `;
 
-export const HeroImageContainer = styled.div``;
+export const HeroImageContainer = styled.div`
+     @media (max-width: 1023px) {
+     img {
+            width: 100%;
+            height: auto;
+     }
+  }
+`;
