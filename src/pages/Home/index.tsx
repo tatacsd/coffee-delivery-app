@@ -5,7 +5,6 @@ import { HomeMainContent } from "./styles";
 
 export function Home() {
   const {
-    shoppingCart,
     coffees,
     increaseQuantity,
     decreaseQuantity,
