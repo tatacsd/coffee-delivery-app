@@ -13,12 +13,23 @@ export const HeaderContainer = styled.header`
         align-items: center;
         gap: 0.5rem;
     }
+
+    @media (max-width: 1023px) {
+        padding: 1rem 0;
+    }
 `;
 
 export const LogoCoffeeDeliveryImage = styled.a`
     img {
         width: 100px;
         height: 40px;
+    }
+
+    @media (max-width: 1023px) {
+        img {
+            width: 80px;
+            height: 32px;
+        }
     }
 `;
 
