@@ -274,7 +274,14 @@ export function Checkout() {
                 <p>Entrega</p> <p>R$ 5.99</p>
               </div>
               <TotaContainerWrapper>
-                <p>Total</p> <p>R$ 35.98</p>
+                <p>Total</p> <p>{`R$ ${
+                  shoppingCart
+                    .reduce(
+                      (acc, coffee) =>
+                        acc + coffee.price * (coffee.quantity || 0),
+                      0
+                    ) + 5.99
+                }`}</p>
               </TotaContainerWrapper>
             </ItemSummary>
             <div>
