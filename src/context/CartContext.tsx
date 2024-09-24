@@ -1,6 +1,19 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useReducer, useEffect, ReactNode } from "react";
 import { Coffee } from "../components/CoffeeCard";
 import { coffeeArr } from "../mockData/coffee";
+
+// actions
+const INCREASE_QUANTITY = "INCREASE_QUANTITY";
+const DECREASE_QUANTITY = "DECREASE_QUANTITY";
+const UPDATE_CART = "UPDATE_CART";
+const REMOVE_COFFEE_ITEM = "REMOVE_COFFEE_ITEM";
+const CLEAR_CART = "CLEAR_CART";
+
+// initial state
+interface CartState {
+  coffees: Coffee[];
+  shoppingCart: Coffee[];
+}
 
 interface CartContextType {
   coffees: Coffee[];
@@ -14,117 +27,106 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [coffees, setCoffees] = useState<Coffee[]>(() => {
-    const savedCoffees = localStorage.getItem("CoffeeDeliveryApp-v1-coffees");
-    return savedCoffees ? JSON.parse(savedCoffees) : coffeeArr;
-  });
+const cartReducer = (state: CartState, action: any): CartState => {
+  switch (action.type) {
+    case INCREASE_QUANTITY:
+      return {
+        ...state,
+        coffees: state.coffees.map(coffee =>
+          coffee.title === action.payload.title
+            ? { ...coffee, quantity: (coffee.quantity || 0) + 1 }
+            : coffee
+        ),
+      };
 
-  const [shoppingCart, setShoppingCart] = useState<Coffee[]>(() => {
-    const savedCart = localStorage.getItem("CoffeeDeliveryApp-v1-shoppingCart");
-    return savedCart ? JSON.parse(savedCart) : [];
-  });
+    case DECREASE_QUANTITY:
+      return {
+        ...state,
+        coffees: state.coffees.map(coffee =>
+          coffee.title === action.payload.title
+            ? { ...coffee, quantity: Math.max((coffee.quantity || 0) - 1, 0) }
+            : coffee
+        ),
+      };
 
-  // Save the shopping cart to localStorage whenever it changes
+    case UPDATE_CART:
+      const coffeeToUpdate = action.payload;
+      return {
+        ...state,
+        shoppingCart: state.shoppingCart
+          .filter(coffee => coffee.title !== coffeeToUpdate.title)
+          .concat(coffeeToUpdate.quantity > 0 ? [coffeeToUpdate] : []),
+      };
+
+    case REMOVE_COFFEE_ITEM:
+      return {
+        ...state,
+        shoppingCart: state.shoppingCart.filter(coffee => coffee.title !== action.payload),
+      };
+
+    case CLEAR_CART:
+      return {
+        coffees: coffeeArr,
+        shoppingCart: [],
+      };
+
+    default:
+      return state;
+  }
+};
+
+// initial state
+const initialState: CartState = {
+  coffees: JSON.parse(localStorage.getItem("CoffeeDeliveryApp-v1-coffees") || "[]") || coffeeArr,
+  shoppingCart: JSON.parse(localStorage.getItem("CoffeeDeliveryApp-v1-shoppingCart") || "[]") || [],
+};
+
+
+export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [cartState, dispatch] = useReducer(cartReducer, initialState);
+
+ 
   useEffect(() => {
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-shoppingCart",
-      JSON.stringify(shoppingCart)
-    );
-  }, [shoppingCart]);
+    localStorage.setItem("CoffeeDeliveryApp-v1-shoppingCart", JSON.stringify(cartState.shoppingCart));
+  }, [cartState.shoppingCart]);
 
-  // Save the coffee array to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-coffees",
-      JSON.stringify(coffees)
-    );
-  }, [coffees]);
+    localStorage.setItem("CoffeeDeliveryApp-v1-coffees", JSON.stringify(cartState.coffees));
+  }, [cartState.coffees]);
 
   const increaseQuantity = (title: string) => {
-    setCoffees((prevCoffees) =>
-      prevCoffees.map((coffee) =>
-        coffee.title === title
-          ? { ...coffee, quantity: (coffee.quantity || 0) + 1 }
-          : coffee
-      )
-    );
-    // update local storage
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-shoppingCart",
-      JSON.stringify(shoppingCart)
-    );
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-coffees",
-      JSON.stringify(coffees)
-    );
-
-    updateCart(coffees.find((coffee) => coffee.title === title) as Coffee);
+    dispatch({ type: INCREASE_QUANTITY, payload: { title } });
+    const coffee = cartState.coffees.find(coffee => coffee.title === title);
+    if (coffee) {
+      updateCart({ ...coffee, quantity: (coffee.quantity || 0) + 1 });
+    }
   };
 
   const decreaseQuantity = (title: string) => {
-    setCoffees((prevCoffees) =>
-      prevCoffees.map((coffee) =>
-        coffee.title === title
-          ? { ...coffee, quantity: (coffee.quantity || 0) - 1 }
-          : coffee
-      )
-    );
-    // update local storage
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-shoppingCart",
-      JSON.stringify(shoppingCart)
-    );
-    localStorage.setItem(
-      "CoffeeDeliveryApp-v1-coffees",
-      JSON.stringify(coffees)
-    );
-    updateCart(coffees.find((coffee) => coffee.title === title) as Coffee);
+    dispatch({ type: DECREASE_QUANTITY, payload: { title } });
+    const coffee = cartState.coffees.find(coffee => coffee.title === title);
+    if (coffee) {
+      updateCart({ ...coffee, quantity: Math.max((coffee.quantity || 0) - 1, 0) });
+    }
   };
 
   const updateCart = (coffee: Coffee) => {
-    setShoppingCart((prevCart) => {
-      // Create a new array to avoid mutating the previous state directly
-      const newCart = [...prevCart];
-      const coffeeIndex = newCart.findIndex((c) => c.title === coffee.title);
-
-      if (coffeeIndex === -1) {
-        // Add new coffee to the cart
-        newCart.push(coffee);
-      } else {
-        // Update existing coffee in the cart
-        newCart[coffeeIndex] = coffee;
-      }
-
-      // Remove items with quantity 0
-      return newCart.filter((item) => item.quantity > 0);
-    });
+    dispatch({ type: UPDATE_CART, payload: coffee });
   };
 
   const removeCoffeeItem = (title: string) => {
-    setShoppingCart((prev) => {
-      const updatedCart = prev.filter((coffee) => coffee.title !== title);
-      localStorage.setItem(
-        "CoffeeDeliveryApp-v1-shoppingCart",
-        JSON.stringify(updatedCart)
-      );
-      return updatedCart;
-    });
+    dispatch({ type: REMOVE_COFFEE_ITEM, payload: title });
   };
 
   const clearCart = () => {
-    setCoffees(coffeeArr);
-
-    setShoppingCart([]);
+    dispatch({ type: CLEAR_CART });
   };
 
   return (
     <CartContext.Provider
       value={{
-        coffees,
-        shoppingCart,
+        coffees: cartState.coffees,
+        shoppingCart: cartState.shoppingCart,
         increaseQuantity,
         decreaseQuantity,
         updateCart,
