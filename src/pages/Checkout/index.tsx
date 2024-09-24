@@ -89,6 +89,9 @@ export function Checkout() {
   } = useCart();
   const navigate = useNavigate();
 
+  console.log(shoppingCart);
+  console.log(selectedPaymentMethod);
+
 
 
  // when a user add or remove from a cart, update the cart
@@ -253,10 +256,10 @@ export function Checkout() {
             {shoppingCart.map((coffee) => (
               <CheckoutCoffeeItem
                 coffee={coffee}
-                key={coffee.title}
-                increaseQuantity={() => increaseQuantity(coffee.title)}
-                decreaseQuantity={() => decreaseQuantity(coffee.title)}
-                removeCoffeeItem={() => removeCoffeeItem(coffee.title)}
+                key={coffee.id}
+                increaseQuantity={() => increaseQuantity(coffee.id)}
+                decreaseQuantity={() => decreaseQuantity(coffee.id)}
+                removeCoffeeItem={() => removeCoffeeItem(coffee.id)}
               />
             ))}
             <ItemSummary>

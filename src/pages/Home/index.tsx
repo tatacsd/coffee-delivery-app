@@ -4,7 +4,10 @@ import { useCart } from '../../context/CartContext';
 import { HomeMainContent } from './styles';
 
 export function Home() {
-    const { coffees, increaseQuantity, decreaseQuantity, updateCart } = useCart();
+    const { shoppingCart, coffees, increaseQuantity, decreaseQuantity, updateCart } = useCart();
+
+    console.table(coffees);
+    console.table(shoppingCart)
 
     return (
         <div>
@@ -12,10 +15,10 @@ export function Home() {
             <HomeMainContent>
                 {coffees.map((coffee) => (
                     <CoffeeCard 
-                        key={coffee.title} 
+                        key={coffee.id} 
                         coffee={coffee}
-                        increaseQuantity={() => increaseQuantity(coffee.title)} 
-                        decreaseQuantity={() => decreaseQuantity(coffee.title)} 
+                        increaseQuantity={() => increaseQuantity(coffee.id)} 
+                        decreaseQuantity={() => decreaseQuantity(coffee.id)} 
                         updateCart={() => updateCart(coffee)} 
                     />
                 ))}

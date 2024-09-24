@@ -12,6 +12,7 @@ import coffeeMacchiatoImg from '../assets/coffee-images/coffee-macchiato.png';
 import coffeeMochaccinoImg from '../assets/coffee-images/coffee-mochaccino.png';
 import coffeeHawaiianImg from '../assets/coffee-images/coffee-havaiano.png';
 import coffeeIrishImg from '../assets/coffee-images/coffee-irlandes.png';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -20,6 +21,7 @@ import { Coffee } from '../components/CoffeeCard';
 
 export const coffeeArr: Coffee[] = [
     {
+        id: uuidv4(),
         image: coffeeTraditionalExpressoImg,
         tag: ['TRADITIONAL'],
         title: 'Traditional Espresso',
@@ -28,6 +30,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeAmericanExpressoImg,
         tag: ['TRADITIONAL'],
         title: 'American Espresso',
@@ -36,6 +39,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeCreamyExpressoImg,
         tag: ['TRADITIONAL'],
         title: 'Creamy Espresso',
@@ -44,6 +48,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeIcedExpressoImg,
         tag: ['TRADITIONAL', 'ICE'],
         title: 'Iced Espresso',
@@ -52,6 +57,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeWithMilkImg,
         tag: ['TRADITIONAL', 'WITH MILK'],
         title: 'Coffee with Milk',
@@ -60,6 +66,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeLatteImg,
         tag: ['TRADITIONAL', 'WITH MILK'],
         title: 'Latte',
@@ -68,6 +75,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeCapuccinoImg,
         tag: ['TRADITIONAL', 'WITH MILK'],
         title: 'Cappuccino',
@@ -76,6 +84,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeMacchiatoImg,
         tag: ['TRADITIONAL', 'WITH MILK'],
         title: 'Macchiato',
@@ -84,6 +93,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeMochaccinoImg,
         tag: ['TRADITIONAL', 'WITH MILK'],
         title: 'Mochaccino',
@@ -92,6 +102,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeHotChocolateImg,
         tag: ['SPECIAL', 'WITH MILK'],
         title: 'Hot Chocolate',
@@ -100,6 +111,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeCubanImg,
         tag: ['SPECIAL', 'ALCOHOLIC', 'ICE'],
         title: 'Cuban',
@@ -108,6 +120,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeHawaiianImg,
         tag: ['SPECIAL'],
         title: 'Hawaiian',
@@ -116,6 +129,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeArabeImg,
         tag: ['SPECIAL'],
         title: 'Arabian',
@@ -124,6 +138,7 @@ export const coffeeArr: Coffee[] = [
         quantity: 0
     },
     {
+        id: uuidv4(),
         image: coffeeIrishImg,
         tag: ['SPECIAL', 'ALCOHOLIC'],
         title: 'Irish',

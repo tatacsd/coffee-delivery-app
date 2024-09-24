@@ -96,4 +96,12 @@ export const SectionImage = styled.div`
         width: 32rem;
         height: 20rem;
     }
+
+
+    @media (max-width: 1023px) {
+        img {
+            width: 24rem;
+            height: 16rem;
+        }
+    }
 `;

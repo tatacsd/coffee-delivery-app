@@ -15,6 +15,7 @@ import { useCart } from '../../context/CartContext';
 
 export type CoffeetTag = 'TRADITIONAL' | 'ICE' | 'WITH MILK' | 'SPECIAL' | 'ALCOHOLIC'
 export type Coffee = {
+    id: string
     image: string
     tag: CoffeetTag[]
     title: string
@@ -26,8 +27,8 @@ export type Coffee = {
 
 export interface CoffeeCardProps {
     coffee: Coffee;
-    increaseQuantity: (title: string) => void;
-    decreaseQuantity: (title: string) => void;
+    increaseQuantity: (id: string) => void;
+    decreaseQuantity: (id: string) => void;
     updateCart: (coffee: Coffee) => void;
 
 }
@@ -35,8 +36,8 @@ export interface CoffeeCardProps {
 export function CoffeeCard({ coffee, increaseQuantity, decreaseQuantity, updateCart }: CoffeeCardProps) {
 
     const { shoppingCart } = useCart();
-    const getShoppingCartQuantityForTheCoffee = (title: string) => {
-        return shoppingCart.find((coffee) => coffee.title === title)?.quantity || 0;
+    const getShoppingCartQuantityForTheCoffee = (id: string) => {
+        return shoppingCart.find((coffee) => coffee.id === id)?.quantity || 0;
     }
     return (
         <CoffeeCardContainer>
@@ -65,13 +66,13 @@ export function CoffeeCard({ coffee, increaseQuantity, decreaseQuantity, updateC
                 </CoffeePrice>
                 <div>
                     <CoffeeQuantityContainer>
-                        <button onClick={coffee.quantity > 0 ? () => decreaseQuantity(coffee.title) : () => {}}>
+                        <button onClick={coffee.quantity > 0 ? () => decreaseQuantity(coffee.id) : () => {}}>
                             -
                         </button>
                         <span>
-                            {getShoppingCartQuantityForTheCoffee(coffee.title)}
+                            {getShoppingCartQuantityForTheCoffee(coffee.id)}
                         </span>
-                        <button onClick={() => increaseQuantity(coffee.title)}>
+                        <button onClick={() => increaseQuantity(coffee.id)}>
                             +
                         </button>
                     </CoffeeQuantityContainer>

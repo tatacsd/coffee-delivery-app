@@ -18,10 +18,10 @@ interface CartState {
 interface CartContextType {
   coffees: Coffee[];
   shoppingCart: Coffee[];
-  increaseQuantity: (title: string) => void;
-  decreaseQuantity: (title: string) => void;
+  increaseQuantity: (id: string) => void;
+  decreaseQuantity: (id: string) => void;
   updateCart: (coffee: Coffee) => void;
-  removeCoffeeItem: (title: string) => void;
+  removeCoffeeItem: (id: string) => void;
   clearCart: () => void;
 }
 
@@ -32,8 +32,8 @@ const cartReducer = (state: CartState, action: any): CartState => {
     case INCREASE_QUANTITY:
       return {
         ...state,
-        coffees: state.coffees.map(coffee =>
-          coffee.title === action.payload.title
+        coffees: state.coffees.map((coffee) =>
+          coffee.id === action.payload.id
             ? { ...coffee, quantity: (coffee.quantity || 0) + 1 }
             : coffee
         ),
@@ -42,26 +42,50 @@ const cartReducer = (state: CartState, action: any): CartState => {
     case DECREASE_QUANTITY:
       return {
         ...state,
-        coffees: state.coffees.map(coffee =>
-          coffee.title === action.payload.title
+        coffees: state.coffees.map((coffee) =>
+          coffee.id === action.payload.id
             ? { ...coffee, quantity: Math.max((coffee.quantity || 0) - 1, 0) }
             : coffee
         ),
       };
 
-    case UPDATE_CART:
+    case UPDATE_CART: {
       const coffeeToUpdate = action.payload;
-      return {
-        ...state,
-        shoppingCart: state.shoppingCart
-          .filter(coffee => coffee.title !== coffeeToUpdate.title)
-          .concat(coffeeToUpdate.quantity > 0 ? [coffeeToUpdate] : []),
-      };
+      const existingCartIndex = state.shoppingCart.findIndex(
+        (coffee) => coffee.id === coffeeToUpdate.id
+      );
+
+      if (existingCartIndex !== -1) {
+        const updatedShoppingCart = [...state.shoppingCart];
+        updatedShoppingCart[existingCartIndex] = {
+          ...updatedShoppingCart[existingCartIndex],
+          quantity: coffeeToUpdate.quantity,
+        };
+
+        return {
+          ...state,
+          shoppingCart: updatedShoppingCart,
+        };
+      }
+
+      if (coffeeToUpdate.quantity > 0) {
+        return {
+          ...state,
+          shoppingCart: [...state.shoppingCart, coffeeToUpdate],
+        };
+      }
+      return state;
+    }
 
     case REMOVE_COFFEE_ITEM:
       return {
         ...state,
-        shoppingCart: state.shoppingCart.filter(coffee => coffee.title !== action.payload),
+        shoppingCart: state.shoppingCart.filter(
+          (coffee) => coffee.id !== action.payload
+        ),
+        coffees: state.coffees.map((coffee) =>
+          coffee.id === action.payload ? { ...coffee, quantity: 0 } : coffee
+        ),
       };
 
     case CLEAR_CART:
@@ -76,37 +100,58 @@ const cartReducer = (state: CartState, action: any): CartState => {
 };
 
 // initial state
+// initial state
 const initialState: CartState = {
-  coffees: JSON.parse(localStorage.getItem("CoffeeDeliveryApp-v1-coffees") || "[]") || coffeeArr,
-  shoppingCart: JSON.parse(localStorage.getItem("CoffeeDeliveryApp-v1-shoppingCart") || "[]") || [],
+  coffees:
+    (() => {
+      const storedCoffees = JSON.parse(
+        localStorage.getItem("CoffeeDeliveryApp-v1-coffees") || "[]"
+      );
+      return Array.isArray(storedCoffees) && storedCoffees.length > 0
+        ? storedCoffees
+        : coffeeArr;
+    })(),
+  shoppingCart:
+    JSON.parse(
+      localStorage.getItem("CoffeeDeliveryApp-v1-shoppingCart") || "[]"
+    ) || [],
 };
 
-
-export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [cartState, dispatch] = useReducer(cartReducer, initialState);
 
- 
   useEffect(() => {
-    localStorage.setItem("CoffeeDeliveryApp-v1-shoppingCart", JSON.stringify(cartState.shoppingCart));
+    localStorage.setItem(
+      "CoffeeDeliveryApp-v1-shoppingCart",
+      JSON.stringify(cartState.shoppingCart)
+    );
   }, [cartState.shoppingCart]);
 
   useEffect(() => {
-    localStorage.setItem("CoffeeDeliveryApp-v1-coffees", JSON.stringify(cartState.coffees));
+    localStorage.setItem(
+      "CoffeeDeliveryApp-v1-coffees",
+      JSON.stringify(cartState.coffees)
+    );
   }, [cartState.coffees]);
 
-  const increaseQuantity = (title: string) => {
-    dispatch({ type: INCREASE_QUANTITY, payload: { title } });
-    const coffee = cartState.coffees.find(coffee => coffee.title === title);
+  const increaseQuantity = (id: string) => {
+    dispatch({ type: INCREASE_QUANTITY, payload: { id } });
+    const coffee = cartState.coffees.find((coffee) => coffee.id === id);
     if (coffee) {
       updateCart({ ...coffee, quantity: (coffee.quantity || 0) + 1 });
     }
   };
 
-  const decreaseQuantity = (title: string) => {
-    dispatch({ type: DECREASE_QUANTITY, payload: { title } });
-    const coffee = cartState.coffees.find(coffee => coffee.title === title);
+  const decreaseQuantity = (id: string) => {
+    dispatch({ type: DECREASE_QUANTITY, payload: { id } });
+    const coffee = cartState.coffees.find((coffee) => coffee.id === id);
     if (coffee) {
-      updateCart({ ...coffee, quantity: Math.max((coffee.quantity || 0) - 1, 0) });
+      updateCart({
+        ...coffee,
+        quantity: Math.max((coffee.quantity || 0) - 1, 0),
+      });
     }
   };
 
@@ -114,8 +159,8 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     dispatch({ type: UPDATE_CART, payload: coffee });
   };
 
-  const removeCoffeeItem = (title: string) => {
-    dispatch({ type: REMOVE_COFFEE_ITEM, payload: title });
+  const removeCoffeeItem = (id: string) => {
+    dispatch({ type: REMOVE_COFFEE_ITEM, payload: id });
   };
 
   const clearCart = () => {
