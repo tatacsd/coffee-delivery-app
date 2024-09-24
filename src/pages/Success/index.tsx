@@ -5,6 +5,7 @@ import successIconPayment from "../../assets/icons/success-payment-method-icon.s
 import { SectionContent, SectionImage, SuccessContainer, SuccessItem, SuccessItemsContainer } from "./styles";
 import { useEffect, useState } from "react";
 import { FormDataPayload, PaymentType } from "../Checkout";
+import { useCart } from "../../context/CartContext";
 
 export function Success() {
   const [address, setAddress] = useState<FormDataPayload>(
@@ -12,6 +13,8 @@ export function Success() {
   );
   const [userPaymentMethod, setUserPaymentMethod] =
     useState<PaymentType>("none");
+
+  const {clearCart} = useCart();
 
   useEffect(() => {
     const address = localStorage.getItem("CoffeeDeliveryApp-v1-user-address");
@@ -21,9 +24,20 @@ export function Success() {
 
     if (address) {
       setAddress(JSON.parse(address));
+
+      // remove local storage to avoid user to go back to checkout
+      localStorage.removeItem("CoffeeDeliveryApp-v1-user-address");
     }
     if (userPaymentMethod) {
       setUserPaymentMethod(JSON.parse(userPaymentMethod));
+      localStorage.removeItem("CoffeeDeliveryApp-v1-user-payment");
+      localStorage.removeItem("CoffeeDeliveryApp-v1-shoppingCart");
+      localStorage.removeItem("CoffeeDeliveryApp-v1-coffees");
+
+      // also remove from useCart coffees, shoppingCart and updateCart
+
+      clearCart();
+      
     }
   }, []);
 

@@ -37,7 +37,7 @@ export function CheckoutCoffeeItem({
         <CoffeePriceQuantityCartContainer>
           <div>
             <CoffeeQuantityContainer>
-              <button
+              <div
                 onClick={
                   coffee.quantity > 0
                     ? () => decreaseQuantity(coffee.title)
@@ -45,15 +45,15 @@ export function CheckoutCoffeeItem({
                 }
               >
                 -
-              </button>
+              </div>
               <span>{coffee.quantity}</span>
-              <button onClick={() => increaseQuantity(coffee.title)}>+</button>
+              <div onClick={() => increaseQuantity(coffee.title)}>+</div>
             </CoffeeQuantityContainer>
             <ButtonRemoveContainer>
               <img src={binIcon} alt="" />
-              <button onClick={() => removeCoffeeItem(coffee.title)}>
+              <div onClick={() => removeCoffeeItem(coffee.title)}>
                 <p>Remove</p>
-              </button>
+              </div>
             </ButtonRemoveContainer>
           </div>
         </CoffeePriceQuantityCartContainer>

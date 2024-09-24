@@ -91,7 +91,7 @@ export const CoffeeQuantityContainer = styled.div`
   gap: 1rem;
   border-radius: 5px;
 
-  button {
+  div {
     width: 24px;
     font-size: ${(props) => props.theme.fonts.fontSize.textL};
     color: ${(props) => props.theme.color.product.purple};
@@ -152,7 +152,7 @@ export const ButtonRemoveContainer = styled.div`
   gap: 0.5rem;
   border-radius: 5px;
 
-  button {
+  div {
     font-size: ${(props) => props.theme.fonts.fontSize.textL};
     color: ${(props) => props.theme.color.product.purple};
     background-color: ${(props) => props.theme.color.base["base-button"]};
