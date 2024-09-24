@@ -31,8 +31,7 @@ import creditCardIcon from "../../assets/payment-method/card-icon.png";
 import moneySignIcon from "../../assets/payment-method/money-sign-icon.png";
 import cashIcon from "../../assets/payment-method/cash-icon.png";
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 export type PaymentType = "Credit" | "Debit" | "Money" | "none";
 
@@ -68,8 +67,6 @@ const schema = z.object({
 
 export type FormDataPayload = z.infer<typeof schema>;
 
-
-
 export function Checkout() {
   const {
     register,
@@ -89,19 +86,13 @@ export function Checkout() {
   } = useCart();
   const navigate = useNavigate();
 
-  console.log(shoppingCart);
-  console.log(selectedPaymentMethod);
-
-
-
- // when a user add or remove from a cart, update the cart
-    useEffect(() => {
+  // when a user add or remove from a cart, update the cart
+  useEffect(() => {
     localStorage.setItem(
       "CoffeeDeliveryApp-v1-shoppingCart",
       JSON.stringify(shoppingCart)
     );
-    }, [shoppingCart, updateCart]);
-
+  }, [shoppingCart, updateCart]);
 
   const onSubmit: SubmitHandler<FormDataPayload> = (data) => {
     if (selectedPaymentMethod === "none") {
@@ -119,13 +110,11 @@ export function Checkout() {
     );
     // Proceed to confirmation or next steps
     navigate("/success");
-
   };
 
   const handlePaymentMethodButton = (paymentMethod: PaymentType) => {
     setSelectedPaymentMethod(paymentMethod);
-
-  }
+  };
 
   return (
     <CheckoutContainer onSubmit={handleSubmit(onSubmit)}>
@@ -280,14 +269,14 @@ export function Checkout() {
                 <p>Entrega</p> <p>R$ 5.99</p>
               </div>
               <TotaContainerWrapper>
-                <p>Total</p> <p>{`R$ ${
-                  (shoppingCart
-                    .reduce(
-                      (acc, coffee) =>
-                        acc + coffee.price * (coffee.quantity || 0),
-                      0
-                    ) + 5.99).toFixed(2)
-                }`}</p>
+                <p>Total</p>{" "}
+                <p>{`R$ ${(
+                  shoppingCart.reduce(
+                    (acc, coffee) =>
+                      acc + coffee.price * (coffee.quantity || 0),
+                    0
+                  ) + 5.99
+                ).toFixed(2)}`}</p>
               </TotaContainerWrapper>
             </ItemSummary>
             <div>

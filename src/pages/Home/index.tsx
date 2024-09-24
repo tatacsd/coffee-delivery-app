@@ -1,28 +1,31 @@
-import { CoffeeCard } from '../../components/CoffeeCard';
-import { HeroSection } from '../../components/HeroSection';
-import { useCart } from '../../context/CartContext';
-import { HomeMainContent } from './styles';
+import { CoffeeCard } from "../../components/CoffeeCard";
+import { HeroSection } from "../../components/HeroSection";
+import { useCart } from "../../context/CartContext";
+import { HomeMainContent } from "./styles";
 
 export function Home() {
-    const { shoppingCart, coffees, increaseQuantity, decreaseQuantity, updateCart } = useCart();
+  const {
+    shoppingCart,
+    coffees,
+    increaseQuantity,
+    decreaseQuantity,
+    updateCart,
+  } = useCart();
 
-    console.table(coffees);
-    console.table(shoppingCart)
-
-    return (
-        <div>
-            <HeroSection />
-            <HomeMainContent>
-                {coffees.map((coffee) => (
-                    <CoffeeCard 
-                        key={coffee.id} 
-                        coffee={coffee}
-                        increaseQuantity={() => increaseQuantity(coffee.id)} 
-                        decreaseQuantity={() => decreaseQuantity(coffee.id)} 
-                        updateCart={() => updateCart(coffee)} 
-                    />
-                ))}
-            </HomeMainContent>
-   </div>
-    );
+  return (
+    <div>
+      <HeroSection />
+      <HomeMainContent>
+        {coffees.map((coffee) => (
+          <CoffeeCard
+            key={coffee.id}
+            coffee={coffee}
+            increaseQuantity={() => increaseQuantity(coffee.id)}
+            decreaseQuantity={() => decreaseQuantity(coffee.id)}
+            updateCart={() => updateCart(coffee)}
+          />
+        ))}
+      </HomeMainContent>
+    </div>
+  );
 }
