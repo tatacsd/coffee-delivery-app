@@ -1,4 +1,3 @@
-import traditionalExpressoCoffeeImg from '../../assets/TraditionalEspresso.png';
 import { 
     CartContainerButton, 
     CoffeeCardContainer, 
@@ -12,6 +11,7 @@ import {
     TagsContainer 
 } from './styles';
 import ShoppingCartSimple from "../../assets/ShoppingCartSimple.svg";
+import { useCart } from '../../context/CartContext';
 
 export type CoffeetTag = 'TRADITIONAL' | 'ICE' | 'WITH MILK' | 'SPECIAL' | 'ALCOHOLIC'
 export type Coffee = {
@@ -26,12 +26,18 @@ export type Coffee = {
 
 export interface CoffeeCardProps {
     coffee: Coffee;
-    increaseQuantity: () => void;
-    decreaseQuantity: () => void;
-    updateCart: () => void;
+    increaseQuantity: (title: string) => void;
+    decreaseQuantity: (title: string) => void;
+    updateCart: (coffee: Coffee) => void;
+
 }
 
 export function CoffeeCard({ coffee, increaseQuantity, decreaseQuantity, updateCart }: CoffeeCardProps) {
+
+    const { shoppingCart } = useCart();
+    const getShoppingCartQuantityForTheCoffee = (title: string) => {
+        return shoppingCart.find((coffee) => coffee.title === title)?.quantity || 0;
+    }
     return (
         <CoffeeCardContainer>
             <CoffeeImage src={coffee.image} alt="" />
@@ -59,17 +65,17 @@ export function CoffeeCard({ coffee, increaseQuantity, decreaseQuantity, updateC
                 </CoffeePrice>
                 <div>
                     <CoffeeQuantityContainer>
-                        <button onClick={coffee.quantity > 0 ? () => decreaseQuantity() : () => {}}>
+                        <button onClick={coffee.quantity > 0 ? () => decreaseQuantity(coffee.title) : () => {}}>
                             -
                         </button>
                         <span>
-                            {coffee.quantity}
+                            {getShoppingCartQuantityForTheCoffee(coffee.title)}
                         </span>
-                        <button onClick={() => increaseQuantity()}>
+                        <button onClick={() => increaseQuantity(coffee.title)}>
                             +
                         </button>
                     </CoffeeQuantityContainer>
-                    <CartContainerButton onClick={() => updateCart()}>
+                    <CartContainerButton onClick={() => updateCart(coffee)}>
                         <img src={ShoppingCartSimple} alt="shopping cart icon"/>
                     </CartContainerButton>
                 </div>

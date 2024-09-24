@@ -97,6 +97,10 @@ export const CoffeeQuantityContainer = styled.div`
         background-color: ${(props) => props.theme.color.base["base-button"]};
         border: none;
         cursor: pointer;
+
+        &:hover {
+            color: ${(props) => props.theme.color.product["purple-dark"]};
+        }
     }
 
     span {
