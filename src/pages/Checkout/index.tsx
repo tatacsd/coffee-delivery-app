@@ -278,12 +278,12 @@ export function Checkout() {
               </div>
               <TotaContainerWrapper>
                 <p>Total</p> <p>{`R$ ${
-                  shoppingCart
+                  (shoppingCart
                     .reduce(
                       (acc, coffee) =>
                         acc + coffee.price * (coffee.quantity || 0),
                       0
-                    ) + 5.99
+                    ) + 5.99).toFixed(2)
                 }`}</p>
               </TotaContainerWrapper>
             </ItemSummary>
