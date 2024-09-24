@@ -6,4 +6,10 @@ export const DefaultLayoutContainer = styled.div`
 
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 1023px) {
+        max-width: 100%;
+        padding: 0 1rem;
+        
+  }
 `;
