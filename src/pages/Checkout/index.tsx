@@ -22,7 +22,7 @@ import {
   FieldsContainer,
   TitleHeader,
 } from "./styles";
-import locationIcon from "../../assets/icons/location-icon.svg";
+import locationIcon from "../../assets/icons/Icon-location.svg";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
@@ -34,7 +34,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
 
-export type PaymentType = "credit" | "debit" | "money" | "none";
+export type PaymentType = "Credit" | "Debit" | "Money" | "none";
 
 export type PaymentMethod = {
   paymentType: PaymentType;
@@ -43,15 +43,15 @@ export type PaymentMethod = {
 
 const paymentsMethods: PaymentMethod[] = [
   {
-    paymentType: "credit",
+    paymentType: "Credit",
     imgURL: creditCardIcon,
   },
   {
-    paymentType: "debit",
+    paymentType: "Debit",
     imgURL: bankIcon,
   },
   {
-    paymentType: "money",
+    paymentType: "Money",
     imgURL: cashIcon,
   },
 ];
@@ -66,7 +66,7 @@ const schema = z.object({
   state: z.string().nonempty("State is required"),
 });
 
-type FormData = z.infer<typeof schema>;
+export type FormDataPayload = z.infer<typeof schema>;
 
 
 
@@ -75,7 +75,7 @@ export function Checkout() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<FormDataPayload>({
     resolver: zodResolver(schema),
   });
   const [selectedPaymentMethod, setSelectedPaymentMethod] =
@@ -100,7 +100,7 @@ export function Checkout() {
     }, [shoppingCart, updateCart]);
 
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormDataPayload> = (data) => {
     if (selectedPaymentMethod === "none") {
       alert("Selecione um método de pagamento");
       return;
@@ -118,6 +118,11 @@ export function Checkout() {
     navigate("/success");
 
   };
+
+  const handlePaymentMethodButton = (paymentMethod: PaymentType) => {
+    setSelectedPaymentMethod(paymentMethod);
+
+  }
 
   return (
     <CheckoutContainer onSubmit={handleSubmit(onSubmit)}>
@@ -222,9 +227,7 @@ export function Checkout() {
             {paymentsMethods.map((paymentMethod) => (
               <PaymentButton
                 onClick={() =>
-                  setSelectedPaymentMethod(
-                    paymentMethod.paymentType as PaymentType
-                  )
+                  handlePaymentMethodButton(paymentMethod.paymentType)
                 }
                 $isMethodSelected={
                   selectedPaymentMethod === paymentMethod.paymentType

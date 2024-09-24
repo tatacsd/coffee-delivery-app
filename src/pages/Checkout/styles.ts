@@ -189,7 +189,7 @@ export interface PaymentButtonProps {
   $isMethodSelected: boolean;
 }
 
-export const PaymentButton = styled.button<PaymentButtonProps>`
+export const PaymentButton = styled.div<PaymentButtonProps>`
   display: flex;
   width: 33%;
   flex-direction: row;
