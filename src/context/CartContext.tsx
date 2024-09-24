@@ -8,6 +8,7 @@ interface CartContextType {
     increaseQuantity: (title: string) => void;
     decreaseQuantity: (title: string) => void;
     updateCart: (coffee: Coffee) => void;
+    removeCoffeeItem: (title: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -41,6 +42,12 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     : coffee
             )
         );
+        // update local storage
+        localStorage.setItem("CoffeeDeliveryApp-v1-shoppingCart", JSON.stringify(shoppingCart));
+        localStorage.setItem("CoffeeDeliveryApp-v1-coffees", JSON.stringify(coffees));
+
+        updateCart(coffees.find((coffee) => coffee.title === title) as Coffee);
+
     };
 
     const decreaseQuantity = (title: string) => {
@@ -51,6 +58,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                     : coffee
             )
         );
+        // update local storage
+        localStorage.setItem("CoffeeDeliveryApp-v1-shoppingCart", JSON.stringify(shoppingCart));
+        localStorage.setItem("CoffeeDeliveryApp-v1-coffees", JSON.stringify(coffees));
+        updateCart(coffees.find((coffee) => coffee.title === title) as Coffee);
     };
 
     const updateCart = (coffee: Coffee) => {
@@ -71,13 +82,18 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             return newCart.filter((item) => item.quantity > 0);
         });
     };
-    
-    
-    
-    
 
+
+    const removeCoffeeItem = (title:string) => {
+        setShoppingCart((prev) => {
+          const updatedCart = prev.filter(coffee => coffee.title !== title);
+          localStorage.setItem("CoffeeDeliveryApp-v1-shoppingCart", JSON.stringify(updatedCart));
+          return updatedCart;
+        });
+      };
+    
     return (
-        <CartContext.Provider value={{ coffees, shoppingCart, increaseQuantity, decreaseQuantity, updateCart }}>
+        <CartContext.Provider value={{ coffees, shoppingCart, increaseQuantity, decreaseQuantity, updateCart, removeCoffeeItem }}>
             {children}
         </CartContext.Provider>
     );
@@ -91,3 +107,5 @@ export const useCart = () => {
     }
     return context;
 };
+
+
