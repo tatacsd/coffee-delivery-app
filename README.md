@@ -1,50 +1,75 @@
-# React + TypeScript + Vite
+# Coffee Delivery App
+Welcome to the Coffee Delivery App! ☕ This app lets users easily manage their coffee orders and shopping cart. It is built with React and TypeScript, along with other modern tools.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is the final step for Module 2 of the Rocketseat React track, where we learn how to create great user interfaces with React.
 
-Currently, two official plugins are available:
+Feel free to check out the app, and enjoy coding! 🚀
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📚 Table of Contents
 
-## Expanding the ESLint configuration
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## ✨ Features
 
-- Configure the top-level `parserOptions` property like this:
+- List of available coffee products
+- Add specific quantities of items to the cart
+- Increase or decrease item quantities in the cart
+- User address form for delivery details
+- Display total items in the cart in the header
+- Calculate and display the total value of items in the cart
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🛠️ Technologies Used
+
+
+- **[React](https://reactjs.org/)**: A JavaScript library for building user interfaces.
+- **[TypeScript](https://www.typescriptlang.org/)**: A typed superset of JavaScript that compiles to plain JavaScript.
+- **[Vite](https://vitejs.dev/)**: A fast build tool and development server.
+- **[React Router](https://reactrouter.com/)**: For managing routing within the application.
+- **[Styled Components](https://styled-components.com/)**: For styling the application using component-level styles.
+- **[Zod](https://zod.dev/)**: For schema validation.
+- **[React Hook Form](https://react-hook-form.com/)**: For handling form validation and state management.
+- **[UUID](https://github.com/uuidjs/uuid)**: For generating unique IDs for items.
+
+
+## 🚀 Installation
+
+To get started with the Coffee Delivery App, follow these steps:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/coffee-delivery-app.git
+cd coffee-delivery-app
+```
+2. Install the dependencies:
+
+```bash
+npm install
+````
+
+3. Start the development server:
+```bash
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Open your browser and visit http://localhost:5173 to view the app.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+🛍️ Usage
+Once the app is running, you can:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Browse through the list of available coffee products.
+- Add items to your cart by specifying quantities.
+- Adjust quantities in your cart as needed.
+- Fill in your address for delivery.
+- Contributing
+- Contributions are welcome! If you have suggestions or improvements, please create a pull request or open an issue.
+
+📜 License
+This project is licensed under the MIT License 
+
+
+Made with 💜 by [Thays Casado](https://github.com/tatacsd)
